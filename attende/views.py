@@ -8,6 +8,20 @@ def signIn(request):
     return render(request, 'attende/signIn.html')
 
 
+def hd(request):
+    if request.user.is_authenticated :
+        empData = []
+        employe = Employee.objects.all()
+        for em in employe:
+            empData.append(em)   
+        totalemp = Employee.objects.all().count()      
+        params = { 'empData' : empData,
+                    'totalemp': totalemp }  
+        return render(request, 'attende/admin.html', params)    
+    else :
+      return redirect('/')        
+
+
 def handleSignUp(request):
     if request.method == "POST":
         name = request.POST['name1']
@@ -25,7 +39,7 @@ def handleSignUp(request):
               emp = Employee(employee_name=name, employee_phone=phone, employee_username=username, employee_email=email1, designation=designation, place=location, employee_aadhar=aadhar)
               emp.save()
               messages.success(request, "Employee Added Succesfully !")
-              return redirect( '/homeadmin')
+              return redirect( '/hd')
         else:
             messages.warning(request, "Passwords did not match !")
             return redirect('/')
@@ -46,7 +60,7 @@ def handleLogin(request):
     if user is not None:
         login(request, user)
         messages.success(request, "You are logged in !")
-        return redirect('/homeadmin')
+        return redirect('/hd')
     else:
         messages.error(request, "Invalid Credential")
         return redirect('/')
@@ -57,13 +71,17 @@ def handleLogout(request):
     return redirect('/')
 
 
-def homeadmin(request):
+def homeadmin(request, id):
     if request.user.is_authenticated :
         empData = []
         employe = Employee.objects.all()
         for em in employe:
-            empData.append(em)
-        params = { 'empData' : empData}    
+            empData.append(em)     
+        ed = Employee.objects.filter(emp_id=id) 
+        totalemp = Employee.objects.all().count()        
+        params = { 'empData' : empData,
+                   'empdetail': ed,
+                   'totalemp': totalemp }  
         return render(request, 'attende/admin.html', params)    
     else :
       return redirect('/')  
@@ -78,4 +96,4 @@ def search(request):
 def empDetails(request, empId):
     empD = Employee.objects.filter(emp_id=empId)
     params = {'empdetail': empD}
-    return render(request, 'attende/empDetails.html', params)           
+    return render(request, 'attende/empDetails.html', params)

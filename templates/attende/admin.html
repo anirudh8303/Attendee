@@ -36,14 +36,15 @@
             display: flex;
             justify-content: space-around;
             padding: 10px;
-            border: 2px solid lightblue;
+            border: 2px solid darkblue;
             border-radius: 5px;
             box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75);
         }
 
+
         form>input {
-            border: 2px solid lightblue;
-            border-radius: 20%;
+            border: 2px solid darkblue;
+            border-radius: 20px;
             width: 250px;
             padding: 10px;
             outline-width: 0;
@@ -54,12 +55,88 @@
         }
 
         .emp {
-            height: 77vh;
+            height: 140vh;
             overflow-y: scroll;
         }
 
-        .emp::-webkit-scrollbar {
-            display: none;
+
+        .admin_bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .emp {
+            flex: 0.5;
+            margin-left: 50px;
+        }
+
+        .emp_details {
+            flex: 0.5;
+            margin: 10px;
+        }
+
+
+
+        .card {
+            border: 2px solid darkblue;
+            border-radius: 20px;
+            box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75) !important;
+        }
+
+        .sf {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .empDetailBottom {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .map {
+            height: 350px;
+            width: 450px;
+            box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75);
+            margin: 50px;
+        }
+
+        .emp_aadharImg {
+            height: 350px;
+            width: 450px;
+            box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75);
+            margin: 50px;
+        }
+
+        .ed {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 10px;
+        }
+
+        .e {
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: 10px;
+        }
+
+        .details {
+            box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75);
+            margin-left: 50px;
+            margin-bottom: 20px;
+            width: 90%;
+            background-color: lightblue;
+            border: 2px solid darkblue;
+            border-radius: 10px;
+        }
+
+        .admin_top1 {
+            margin-top: 50px;
+            margin: 20px;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75);
         }
     </style>
 </head>
@@ -88,15 +165,21 @@
         </button>
     </div>
     {% endfor %}
+    <div class="admin_top1">
+        <h5>Total employees: {{totalemp}}</h5>
+        <h5>On-site:</h5>
+        <h5>Travelling:</h5>
+        <h5>Inactive: </h5>
+    </div>
     <div class="admin_middle">
         <div class="left">
-            <form method="GET" action="/search/">
+            <form method="GET" action="/search/" class="sf">
                 <input type="text" placeholder="Enter Employee Name..." id="search" name="query">
-                <button class="btn btn-primary" style="border-radius: 40%;">Search</button>
+                <button class="btn btn-primary ml-2" style="border-radius: 10px;">Search</button>
             </form>
         </div>
         <!-- Button trigger SignUp modal -->
-        <button type="button" class="btn btn-primary mx-2 " style="border-radius: 40%;" data-toggle="modal"
+        <button type="button" class="btn btn-primary mx-2 " style="border-radius: 10px;" data-toggle="modal"
             data-target="#signup">
             Add Employee
         </button>
@@ -156,7 +239,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleUpload">Upload Id</label>
-                                <input type="file" class="form-control" id="exampleUpload" name="adhr" />
+                                <input type="file" class="form-control" id="exampleUpload" name="adhr" required />
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 Submit
@@ -168,7 +251,7 @@
         </div>
     </div>
     <div class="admin_bottom">
-        <div class="emp container mt-3">
+        <div class="emp mt-3">
             <center>
                 <h3 style=" font-family: Comic Sans MS, cursive, sans-serif;">Employee List</h3>
             </center>
@@ -177,16 +260,14 @@
                 <div class="card my-1">
                     <center>
                         <div class="card-body">
-                            <h5 class="card-title">Employee-Name : {{emp.employee_name}}</h5>
-                            <p class="card-text">Employee-id : {{emp.emp_id}} </p>
-                            <p class="card-text">Employee- username : {{emp.employee_username}} </p>
-                            <p class="card-text">Employee-email : {{emp.employee_email}} </p>
-                            <p class="card-text">Phone : {{emp.employee_phone}} </p>
-                            <p class="card-text">Employee-designation : {{emp.designation}} </p>
-                            <p class="card-text">Employee-location: {{emp.place}} </p>
+                            <h5 class="card-title">{{emp.employee_name}}</h5>
+                            <p class="card-text">{{emp.emp_id}} </p>
+                            <p class="card-text">{{emp.employee_email}} </p>
+                            <p class="card-text">{{emp.employee_phone}} </p>
+                            <p class="card-text">{{emp.designation}} </p>
                             <div class="mycls" align="center">
-                                <a href="{% url 'empDetails' emp.emp_id %}"><button class="btn btn-primary"
-                                        style="border-radius: 40%;">View Employee
+                                <a href="/homeadmin/{{emp.emp_id}}"><button class="btn btn-primary"
+                                        style="border-radius: 10px;">View Employee
                                         Details</button> </a>
                             </div>
                         </div>
@@ -194,6 +275,117 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div class="emp_details">
+            <div class="empDetails_middleA">
+                <center>
+                    <h3 style=" font-family: Comic Sans MS, cursive, sans-serif;">Employee Details...</h3>
+                </center>
+                <div class="details container mt-3">
+                    {% for emp in empdetail %}
+                    <div class="ed">
+                        <p1 style="font-size: 21px;">Id: {{emp.emp_id}}</p1>
+                        <p1 style="font-size: 21px;">Name: {{emp.employee_name}}</p1>
+                        <p1 style="font-size: 21px;">Username: {{emp.employee_username}}</p1>
+                    </div>
+                    {% endfor %}
+                    {% for emp in empdetail %}
+                    <div class="e mt-2">
+                        <p1 style="font-size: 21px;">Email: {{emp.employee_email}}</p1>
+                        <p1 style="font-size: 21px;">Phone: {{emp.employee_phone}}</p1>
+                        <p1 style="font-size: 21px;">Designation: {{emp.designation}}</p1>
+                    </div>
+                    {% endfor %}
+                    <center>
+                        <button type="button" class="btn btn-primary mb-2 mt-2" style="border-radius: 10px;"
+                            data-toggle="modal" data-target="#adhr">
+                            View Aadhar
+                        </button>
+                    </center>
+                    <!-- View Aadhar Modal-->
+                    <div class="modal fade" id="adhr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalSignUpLabel">
+                                        Employee Aadhar
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {% for emp in empdetail %}
+                                    <center>
+                                        <img src='/media/{{emp.employee_aadhar}}' alt="aadhar_image"
+                                            style="width: 70%; height: 80%;">
+                                    </center>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="empDetails_middleB mt-1">
+                <!-- Datepicker-->
+                <center>
+                    <h2 style=" font-family: Comic Sans MS, cursive, sans-serif;">Select Dates</h2>
+                </center>
+                <div class="datepicker mt-4">
+                    <form method="POST" class="sf">
+                        {% csrf_token %}
+                        <h5 style=" font-family: Comic Sans MS, cursive, sans-serif; margin-right: 15px;">From</h5>
+                        <input type="date">
+                        <h5
+                            style=" font-family: Comic Sans MS, cursive, sans-serif;margin-right: 15px; margin-left: 15px;">
+                            To
+                        </h5>
+                        <input type="date">
+                        <button type="submit" class="btn btn-primary"
+                            style="margin-left: 15px;border-radius: 10px;">Search</button>
+                    </form>
+                </div>
+                <div class="container mt-3">
+                    <div class="emp_workDetail">
+                        <table border="1" style="width: 100%;">
+                            <tr align="center">
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>Site</td>
+                                <td>Machine</td>
+                                <td>Machine-status</td>
+                                <td>Reason</td>
+                            </tr>
+                            <tr align="center">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-3">
+                <div class="empDetailBottom">
+                    <div class="map">
+                        <center>
+                            {% for emp in empdetail %}
+                            <h3 style="margin-top: 100px;">{{emp.place}}</h3>
+                            {% endfor %}
+                        </center>
+                    </div>
+                    <div class="emp_aadharImg">
+                        <img src="" alt="aadhar_img">
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

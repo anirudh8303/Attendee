@@ -25,13 +25,20 @@
         .middle {
             margin-top: 100px;
         }
+
+        .card {
+            border: 2px solid darkblue;
+            border-radius: 20px;
+            box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75) !important;
+            background-color: lightblue;
+        }
     </style>
 </head>
 
 <body>
     <div class="search_top mt-5">
         <center>
-            <a href="/homeadmin/"> <button class="btn btn-primary" style="border-radius: 40%;">Back To admin
+            <a href="/hd"> <button class="btn btn-primary" style="border-radius: 40%;">Back To admin
                     Pannel</button></a>
         </center>
     </div>
@@ -57,7 +64,7 @@
                                     <div class="mycls" align="center">
                                         <a href="{% url 'empDetails' emp.emp_id %}"><button class="btn btn-primary"
                                                 style="border-radius: 40%;">View Employee
-                                                Details</button> </a>
+                                                Details</button></a>
                                     </div>
                                 </div>
                             </center>
