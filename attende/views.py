@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Employee
+from .models import Employee, WorkDates
 # Create your views here.
 def signIn(request):
     return render(request, 'attende/signIn.html')
@@ -70,6 +70,14 @@ def handleLogout(request):
     messages.success(request, "You are Logged Out !")
     return redirect('/')
 
+def wd(request, id, date):
+    if request.user.is_authenticated:
+            return render(request, 'attende/workdetails.html')
+    else:
+        messages.warning(request, "Something went wrong")
+        return redirect('/hd')   
+
+
 
 def homeadmin(request, id):
     if request.user.is_authenticated :
@@ -78,10 +86,13 @@ def homeadmin(request, id):
         for em in employe:
             empData.append(em)     
         ed = Employee.objects.filter(emp_id=id) 
-        totalemp = Employee.objects.all().count()        
+        totalemp = Employee.objects.all().count()  
+        empworkd = WorkDates.objects.filter(employee__emp_id =id) 
         params = { 'empData' : empData,
                    'empdetail': ed,
-                   'totalemp': totalemp }  
+                   'totalemp': totalemp,
+                   'empworkd': empworkd,
+                   'id': id }  
         return render(request, 'attende/admin.html', params)    
     else :
       return redirect('/')  
