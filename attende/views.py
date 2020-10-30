@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Employee, WorkDates
+import datetime
+import re    
 # Create your views here.
 def signIn(request):
     return render(request, 'attende/signIn.html')
@@ -72,7 +74,41 @@ def handleLogout(request):
 
 def wd(request, id, date):
     if request.user.is_authenticated:
-            return render(request, 'attende/workdetails.html')
+        empData = []
+        employe = Employee.objects.all()
+        for em in employe:
+            empData.append(em)     
+        ed = Employee.objects.filter(emp_id=id) 
+        totalemp  = Employee.objects.all().count()  
+        emplc = WorkDates.objects.filter(employee__emp_id=id, emp_date=date)
+        empworkdt = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel", emp_date=date) 
+        empworkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site", emp_date=date)
+        if request.method == "POST":
+            d1 = request.POST['datefrom']
+            d2 = request.POST['dateto']
+            empwrkt =  WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel", emp_date__range=(d1, d2)) 
+            empwrkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site", emp_date__range=(d1, d2))  
+            params = { 'empData' : empData,
+                   'empdetail': ed,
+                   'totalemp': totalemp,
+                   'empwrkt': empwrkt,
+                   'empwrkds': empwrkds,
+                   'id': id,
+                   'emplc': emplc,
+                   'd1': d1,
+                   'd2': d2}  
+            return render(request, 'attende/admin.html', params)   
+        else:
+            params = { 'empData' : empData,
+                   'empdetail': ed,
+                   'totalemp': totalemp,
+                   'empworkdt': empworkdt,
+                   'empworkds': empworkds,
+                   'id': id,
+                   'emplc':emplc,
+                   'd1': "mm-dd-yyyy",
+                    'd2': "mm-dd-yyyy" } 
+            return render(request, 'attende/admin.html', params) 
     else:
         messages.warning(request, "Something went wrong")
         return redirect('/hd')   
@@ -86,14 +122,33 @@ def homeadmin(request, id):
         for em in employe:
             empData.append(em)     
         ed = Employee.objects.filter(emp_id=id) 
-        totalemp = Employee.objects.all().count()  
-        empworkd = WorkDates.objects.filter(employee__emp_id =id) 
-        params = { 'empData' : empData,
+        totalemp  = Employee.objects.all().count()  
+        empworkdt = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel") 
+        empworkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site")
+        if request.method == "POST":
+            d1 = request.POST['datefrom']
+            d2 = request.POST['dateto']
+            empwrkt =  WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel", emp_date__range=(d1, d2)) 
+            empwrkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site", emp_date__range=(d1, d2))  
+            params = { 'empData' : empData,
                    'empdetail': ed,
                    'totalemp': totalemp,
-                   'empworkd': empworkd,
-                   'id': id }  
-        return render(request, 'attende/admin.html', params)    
+                   'empwrkt': empwrkt,
+                   'empwrkds': empwrkds,
+                   'id': id ,
+                    'd1': d1,
+                    'd2': d2 }  
+            return render(request, 'attende/admin.html', params)   
+        else:
+            params = { 'empData' : empData,
+                   'empdetail': ed,
+                   'totalemp': totalemp,
+                   'empworkdt': empworkdt,
+                   'empworkds': empworkds,
+                   'id': id,
+                   'd1': "mm-dd-yyyy",
+                   'd2': "mm-dd-yyyy" } 
+            return render(request, 'attende/admin.html', params) 
     else :
       return redirect('/')  
 
@@ -103,8 +158,3 @@ def search(request):
     searchData = Employee.objects.filter(employee_name__icontains=query)
     params = {'searchData': searchData}
     return render(request, 'attende/SearchPage.html', params)     
-
-def empDetails(request, empId):
-    empD = Employee.objects.filter(emp_id=empId)
-    params = {'empdetail': empD}
-    return render(request, 'attende/empDetails.html', params)

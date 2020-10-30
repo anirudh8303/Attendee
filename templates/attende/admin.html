@@ -55,7 +55,7 @@
         }
 
         .emp {
-            height: 140vh;
+            height: 180vh;
             overflow-y: scroll;
         }
 
@@ -66,12 +66,12 @@
         }
 
         .emp {
-            flex: 0.2;
+            flex: 0.4;
             margin-left: 50px;
         }
 
         .emp_details {
-            flex: 0.8;
+            flex: 0.6;
             margin: 10px;
         }
 
@@ -145,6 +145,15 @@
             height: 190px;
             overflow-y: scroll;
         }
+
+        .emp_workDetail1>table {
+            border: 2px solid darkblue;
+        }
+
+        .emp_workDetail1 {
+            height: 190px;
+            overflow-y: scroll;
+        }
     </style>
 </head>
 
@@ -174,8 +183,8 @@
     {% endfor %}
     <div class="admin_top1">
         <h5>Total employees: {{totalemp}}</h5>
-        <h5>On-site:</h5>
-        <h5>Travelling:</h5>
+        <h5>On-site: </h5>
+        <h5>Travelling: </h5>
         <h5>Inactive: </h5>
     </div>
     <div class="admin_middle">
@@ -304,10 +313,13 @@
                     </div>
                     {% endfor %}
                     <center>
+                        <button class="btn btn-primary" style="border-radius: 10px;">Disable</button>
                         <button type="button" class="btn btn-primary mb-2 mt-2" style="border-radius: 10px;"
                             data-toggle="modal" data-target="#adhr">
                             View Aadhar
                         </button>
+                        <a href="/homeadmin/{{id}}"><button class="btn btn-primary"
+                                style="border-radius: 10px;">Refresh</button></a>
                     </center>
                     <!-- View Aadhar Modal-->
                     <div class="modal fade" id="adhr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -345,12 +357,12 @@
                     <form method="POST" class="sf">
                         {% csrf_token %}
                         <h5 style=" font-family: Comic Sans MS, cursive, sans-serif; margin-right: 15px;">From</h5>
-                        <input type="date">
+                        <input type="date" id="dt1" name="datefrom" value='{{d1}}'>
                         <h5
                             style=" font-family: Comic Sans MS, cursive, sans-serif;margin-right: 15px; margin-left: 15px;">
                             To
                         </h5>
-                        <input type="date">
+                        <input type="date" id="dt2" name="dateto" value='{{d2}}'>
                         <button type="submit" class="btn btn-primary"
                             style="margin-left: 15px;border-radius: 10px;">Search</button>
                     </form>
@@ -365,9 +377,58 @@
                                 <td>Machine-status</td>
                                 <td>Reason</td>
                             </tr>
-                            {% for e in empworkd %}
+                            {% for e in empworkds %}
                             <tr align="center">
-                                <td><a href='/workdetail/{{id}}/{{e.emp_date}}'>{{e.emp_date}}</a></td>
+                                <td><a
+                                        href='/workdetail/{{id}}/{{e.emp_date|date:"Y-m-d"}}'>{{e.emp_date|date:"Y-m- d" }}</a>
+                                </td>
+                                <td>{{e.emp_work_status}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </a>
+                            {% endfor %}
+                            {% for e in empwrkds %}
+                            <tr align="center">
+                                <td><a
+                                        href='/workdetail/{{id}}/{{e.emp_date|date:"Y-m-d"}}'>{{e.emp_date|date:"Y-m-d"}}</a>
+                                </td>
+                                <td>{{e.emp_work_status}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </a>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="emp_workDetail1 mt-5">
+                        <table border="1" style="width: 100%;">
+                            <tr align="center">
+                                <td>Date</td>
+                                <td>Site</td>
+                                <td>Travel_from</td>
+                                <td>Travel_to</td>
+                                <td>Travel_duration</td>
+                            </tr>
+                            {% for e in empworkdt %}
+                            <tr align="center">
+                                <td><a
+                                        href='/workdetail/{{id}}/{{e.emp_date|date:"Y-m-d"}}'>{{e.emp_date|date:"Y-m-d"}}</a>
+                                </td>
+                                <td>{{e.emp_work_status}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </a>
+                            {% endfor %}
+                            {% for e in empwrkt %}
+                            <tr align="center">
+                                <td><a
+                                        href='/workdetail/{{id}}/{{e.emp_date|date:"Y-m-d"}}'>{{e.emp_date|date:"Y-m-d"}}</a>
+                                </td>
                                 <td>{{e.emp_work_status}}</td>
                                 <td></td>
                                 <td></td>
@@ -380,16 +441,29 @@
                 </div>
             </div>
             <div class="container mt-3">
-                <center>
+                <div class="empDetailBottom">
+                    <div class="map">
+                        {% for l in emplc %}
+                        <center>
+                            <h5>Location-on-date :{{l.emp_date|date:"Y-m-d"}}</h5>
+                        </center>
+                        {% endfor %}
+                        <center>
+                            {% for emp in emplc%}
+                            <h3 style="margin-top: 100px;">{{emp.emp_latitude}}</h3>
+                            <h3 style="margin-top: 100px;">{{emp.emp_longitude}}</h3>
+                            {% endfor %}
+                        </center>
+                    </div>
                     <div class="emp_aadharImg">
                         <img src="" alt="aadhar_img">
                     </div>
-                </center>
+                </div>
             </div>
+
 
         </div>
     </div>
-
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

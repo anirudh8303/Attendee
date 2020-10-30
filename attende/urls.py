@@ -9,7 +9,5 @@ urlpatterns = [
     path('hd/', views.hd, name="hd"),
     path('homeadmin/<id>', views.homeadmin, name="homeadmin"),
     path('search/', views.search, name="search"),
-    path('empDetails/<empId>', views.empDetails, name="empDetails"),
     path('workdetail/<id>/<date>', views.wd, name="wd"),
-
 ]
