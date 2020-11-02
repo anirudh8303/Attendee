@@ -107,7 +107,7 @@ def wd(request, id, date):
                    'id': id,
                    'emplc':emplc,
                    'd1': "mm-dd-yyyy",
-                    'd2': "mm-dd-yyyy" } 
+                    'd2': "mm-dd-yyyy" }      
             return render(request, 'attende/admin.html', params) 
     else:
         messages.warning(request, "Something went wrong")
