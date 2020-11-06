@@ -5,6 +5,34 @@ from django.contrib import messages
 from .models import Employee, WorkDates
 import datetime
 import re    
+from firebase import Firebase
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+config = {
+  "apiKey": "AIzaSyD4jECMBq3j9bSj9eYrjiOmDMLAQ3KxFRc",
+  "authDomain": "snpc-attendence.firebaseapp.com/",
+  "databaseURL": "https://snpc-attendence.firebaseio.com/",
+  "storageBucket": "snpc-attendence.appspot.com",
+  "serviceAccount": "snpc-attendence-firebase-adminsdk-ssdhp-541121d9ef.json"
+}
+
+firebase = Firebase(config)
+cred = credentials.Certificate('snpc-attendence-firebase-adminsdk-ssdhp-541121d9ef.json')
+
+firebase_admin.initialize_app(cred, {
+        'databaseURL': "https://snpc-attendence.firebaseio.com/",
+    })
+
+
+def sync(request):
+    ref = db.reference('/')
+    userjson = ref.get()
+    print(userjson)
+    messages.success(request, "Data synced")
+    return redirect('/hd')
+
 # Create your views here.
 def signIn(request):
     return render(request, 'attende/signIn.html')
