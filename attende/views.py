@@ -2,13 +2,14 @@ from django.shortcuts import render,redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Employee, WorkDates
+from .models import Employee, Travel, OnSite
 import datetime
 import re    
 from firebase import Firebase
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+import json
 
 config = {
   "apiKey": "AIzaSyD4jECMBq3j9bSj9eYrjiOmDMLAQ3KxFRc",
@@ -29,8 +30,12 @@ firebase_admin.initialize_app(cred, {
 def sync(request):
     ref = db.reference('/')
     userjson = ref.get()
-    print(userjson)
+    with open('data.json','w') as f:
+        json.dump(userjson,f)
     messages.success(request, "Data synced")
+    with open('data.json') as json_file: 
+      data = json.load(json_file) 
+    print(data['Users']['profile_info'])  
     return redirect('/hd')
 
 # Create your views here.
@@ -108,21 +113,23 @@ def wd(request, id, date):
             empData.append(em)     
         ed = Employee.objects.filter(emp_id=id) 
         totalemp  = Employee.objects.all().count()  
-        emplc = WorkDates.objects.filter(employee__emp_id=id, emp_date=date)
-        empworkdt = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel", emp_date=date) 
-        empworkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site", emp_date=date)
+        emplcS = OnSite.objects.filter(employee__emp_id=id, emp_date=date)
+        emplcT = Travel.objects.filter(employee__emp_id=id, emp_date=date)
+        empworkdt = Travel.objects.filter(employee__emp_id=id, emp_date=date) 
+        empworkds = OnSite.objects.filter(employee__emp_id=id, emp_date=date)
         if request.method == "POST":
             d1 = request.POST['datefrom']
             d2 = request.POST['dateto']
-            empwrkt =  WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel", emp_date__range=(d1, d2)) 
-            empwrkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site", emp_date__range=(d1, d2))  
+            empwrkt =  Travel.objects.filter(employee__emp_id=id, emp_date__range=(d1, d2)) 
+            empwrkds = OnSite.objects.filter(employee__emp_id=id, emp_date__range=(d1, d2))  
             params = { 'empData' : empData,
                    'empdetail': ed,
                    'totalemp': totalemp,
                    'empwrkt': empwrkt,
                    'empwrkds': empwrkds,
                    'id': id,
-                   'emplc': emplc,
+                   'emplcS': emplcS,
+                   'emplcT': emplcT,
                    'd1': d1,
                    'd2': d2}  
             return render(request, 'attende/admin.html', params)   
@@ -133,7 +140,8 @@ def wd(request, id, date):
                    'empworkdt': empworkdt,
                    'empworkds': empworkds,
                    'id': id,
-                   'emplc':emplc,
+                   'emplcS': emplcS,
+                   'emplcT': emplcT,
                    'd1': "mm-dd-yyyy",
                     'd2': "mm-dd-yyyy" }      
             return render(request, 'attende/admin.html', params) 
@@ -151,13 +159,13 @@ def homeadmin(request, id):
             empData.append(em)     
         ed = Employee.objects.filter(emp_id=id) 
         totalemp  = Employee.objects.all().count()  
-        empworkdt = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel") 
-        empworkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site")
+        empworkdt = Travel.objects.filter(employee__emp_id=id) 
+        empworkds = OnSite.objects.filter(employee__emp_id=id)
         if request.method == "POST":
             d1 = request.POST['datefrom']
             d2 = request.POST['dateto']
-            empwrkt =  WorkDates.objects.filter(employee__emp_id=id, emp_work_status="Travel", emp_date__range=(d1, d2)) 
-            empwrkds = WorkDates.objects.filter(employee__emp_id=id, emp_work_status="On Site", emp_date__range=(d1, d2))  
+            empwrkt =  Travel.objects.filter(employee__emp_id=id, emp_date__range=(d1, d2)) 
+            empwrkds = OnSite.objects.filter(employee__emp_id=id, emp_date__range=(d1, d2))  
             params = { 'empData' : empData,
                    'empdetail': ed,
                    'totalemp': totalemp,

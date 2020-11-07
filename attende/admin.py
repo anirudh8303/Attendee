@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Employee, WorkDates
+from .models import Employee, OnSite, Travel
 admin.site.register(Employee)
-admin.site.register(WorkDates)
+admin.site.register(OnSite)
+admin.site.register(Travel)
 

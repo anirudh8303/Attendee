@@ -447,10 +447,16 @@
             <div class="container mt-3">
                 <div class="empDetailBottom">
                     <div class="mp">
-                        {% for l in emplc %}
+                        {% for l in emplcS %}
                         <form>
                             <input type="hidden" name="la" id="la" value={{l.emp_latitude}}>
                             <input type="hidden" name="lo" id="lo" value={{l.emp_longitude}}>
+                        </form>
+                        {% endfor %}
+                        {% for l in emplcT %}
+                        <form>
+                            <input type="hidden" name="la" id="la" value={{l.emp_latitudec}}>
+                            <input type="hidden" name="lo" id="lo" value={{l.emp_longitudec}}>
                         </form>
                         {% endfor %}
                         <div class="map" id="map">
