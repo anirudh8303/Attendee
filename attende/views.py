@@ -35,7 +35,55 @@ def sync(request):
     messages.success(request, "Data synced")
     with open('data.json') as json_file: 
       data = json.load(json_file) 
-    print(data['Users']['profile_info'])  
+    def getList(dict):
+        return dict.keys()
+    d = getList(data['Users']['profile_info'])
+    c = []
+    for i in d:
+        c.append(i)
+    c.pop()    
+    for emp in c:
+        if Employee.objects.filter(employee_phone=data['Users']['profile_info'][emp]['phone_number']).count() == 0:
+            emp = Employee(employee_name=data['Users']['profile_info'][emp]['name'], employee_email=data['Users']['profile_info'][emp]['email_id'],employee_phone=data['Users']['profile_info'][emp]['phone_number'])
+            emp.save() 
+        else:
+            continue 
+    current_time = datetime.datetime.now()   
+    try:
+        e = getList(data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))])
+        f = []
+        for i in e:
+            f.append(i)
+        f.pop()
+        for i in f:
+            a = getList(data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i])
+        attendanceDetails = []
+        for i in a:
+            attendanceDetails.append(i)
+        for i in f:
+            if OnSite.objects.filter(employee=Employee.objects.get(employee_phone=i), emp_date=current_time).count() == 0:
+                onsite = OnSite(employee=Employee.objects.get(employee_phone=i),emp_date=current_time,emp_latitude=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['current_location']['lat'],emp_longitude=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['current_location']['long'],emp_work_modelNumber=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['model_number'],emp_maintainParts=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['parts'],emp_partsReason=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['reason'],emp_totalProdution=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['total_production'],emp_siteInfo=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['site_info'],emp_running=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['total_run'])
+                onsite.save()
+            else:
+                continue 
+    except:
+        print("no attendance on-site")
+    try:
+        g = getList(data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))])
+        h = []
+        for i in g:
+            h.append(i)
+        h.pop()
+        for i in h:
+            if Travel.objects.filter(employee=Employee.objects.get(employee_phone=i),emp_date=current_time).count() == 0:
+                accList = []
+                accList = data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['total_workforce']
+                trvl = Travel(employee=Employee.objects.get(employee_phone=i),emp_date=current_time,emp_latitudec=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['current_location']['lat'],emp_longitudec=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['current_location']['long'],travel_from=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['from'],travel_to=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['to'],travel_duration=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['duration'],travel_purpose=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['purpose'],emp_latitude1=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['travelling_location']['location1']['lat'],emp_longitude1=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['travelling_location']['location1']['long'],emp_latitude2=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['travelling_location']['location2']['lat'],emp_longitude2=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['travelling_location']['location2']['long'],emp_latitude3=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['travelling_location']['location3']['lat'],emp_longitude3=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['travelling_location']['location3']['long'],travel_by=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['transport'],accompanied_emp2=accList[0],accompanied_emp3=accList[1])  
+                trvl.save()
+            else:
+                continue  
+    except:
+        print("No travelling details on this date")
     return redirect('/hd')
 
 # Create your views here.
