@@ -107,6 +107,7 @@
             width: 450px;
             box-shadow: 0px 6px 18px -9px rgba(0, 0, 0, 0.75);
             margin: 50px;
+            padding: 20px;
         }
 
         .ed {
@@ -179,22 +180,75 @@
     {% endfor %}
     <div class="admin_top1">
         <h5>Total employees: {{totalemp}}</h5>
-        <h5>On-site: </h5>
-        <h5>Travelling: </h5>
-        <h5>Inactive: </h5>
+        <h5>On-site: {{os}} </h5>
+        <h5>Travelling: {{te}}</h5>
+        <h5>Inactive: {{inac}} </h5>
     </div>
     <div class="admin_middle">
         <div class="left">
             <form method="GET" action="/search/" class="sf">
-                <input type="text" placeholder="Enter Employee Name..." id="search" name="query">
+                <input type="text" placeholder="Enter Employee Name or phone number..." id="search" name="query" style="width: 320px;">
                 <button class="btn btn-primary ml-2" style="border-radius: 10px;">Search</button>
             </form>
         </div>
-        <!-- Button trigger SignUp modal -->
-        <button type="button" class="btn btn-primary mx-2 " style="border-radius: 10px;" data-toggle="modal"
+        <div class="nvtop" style="align-items: center;">
+            <button type="button" class="btn btn-primary mx-2 " style="border-radius: 10px; margin:8px;" data-toggle="modal"
             data-target="#signup">
-            Add Employee
+            Add Admin
         </button>
+        <button type="button" class="btn btn-primary mx-2 " style="border-radius: 10px;margin:8px" data-toggle="modal"
+        data-target="#employee">
+        Add Employee
+    </button>
+        </div>
+         <!--Employee Modal -->
+         <div class="modal fade" id="employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalSignUpLabel">
+                         Add Employee
+                     </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-body">
+                     <form method="post" action="/addemployee/" enctype="multipart/form-data">
+                         {% csrf_token %}
+                         <div class="form-group">
+                             <label for="exampleInputName1">Name</label>
+                             <input type="text" class="form-control" id="exampleInputName1"
+                                 aria-describedby="Full Name..." name="name2" />
+                         </div>
+                         <div class="form-group">
+                             <label for="exampleInputPhone1">Phone</label>
+                             <input type="number" class="form-control" id="exampleInputPhone1"
+                                 aria-describedby="Contact Number..." name="phn2" />
+                         </div>
+                         <div class="form-group">
+                             <label for="exampleInputEmail1">Email address</label>
+                             <input type="email" class="form-control" id="exampleInputEmail1"
+                                 aria-describedby="Email.." name="email2" />
+                         </div>
+                         <div class="form-group">
+                             <label for="exampleInputDesignation">Designation</label>
+                             <input type="text" class="form-control" id="exampleInputDesignation"
+                                 aria-describedby="Designation" name="desg2" />
+                         </div>
+                         <div class="form-group">
+                             <label for="exampleUpload">Upload Id</label>
+                             <input type="file" class="form-control" id="exampleUpload" name="adhr2" required />
+                         </div>
+                         <button type="submit" class="btn btn-primary">
+                             Submit
+                         </button>
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </div>
         <!--SignUp Modal -->
         <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -202,7 +256,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalSignUpLabel">
-                            Add Employee
+                            Add Admin
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -217,24 +271,9 @@
                                     aria-describedby="Full Name..." name="name1" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPhone1">Phone</label>
-                                <input type="number" class="form-control" id="exampleInputPhone1"
-                                    aria-describedby="Contact Number..." name="phn" />
-                            </div>
-                            <div class="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="Email.." name="email1" />
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputDesignation">Designation</label>
-                                <input type="text" class="form-control" id="exampleInputDesignation"
-                                    aria-describedby="Designation" name="desg" />
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputLocation1">Location</label>
-                                <input type="text" class="form-control" id="exampleInputLocation"
-                                    aria-describedby="Place..." name="loc" />
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputUsername">Username</label>
@@ -248,10 +287,6 @@
                             <div class="form-group">
                                 <label for="exampleConfirmPassword">Re-Type Password</label>
                                 <input type="password" class="form-control" id="exampleInputPassword1" name="pass2" />
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleUpload">Upload Id</label>
-                                <input type="file" class="form-control" id="exampleUpload" name="adhr" required />
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 Submit
@@ -298,7 +333,7 @@
                     <div class="ed">
                         <p1 style="font-size: 21px;">Id: {{emp.emp_id}}</p1>
                         <p1 style="font-size: 21px;">Name: {{emp.employee_name}}</p1>
-                        <p1 style="font-size: 21px;">Total Working days</p1>
+                        <p1 style="font-size: 21px;">Total Working days : {{count}}</p1>
                     </div>
                     {% endfor %}
                     {% for emp in empdetail %}
@@ -309,7 +344,17 @@
                     </div>
                     {% endfor %}
                     <center>
-                        <button class="btn btn-primary" style="border-radius: 10px;">Disable</button>
+                        {% for d in empdetail %}
+                        {% if d.employee_status == 0 %}
+                        <a href="/ad/1/{{d.emp_id}}">
+                            <button class="btn btn-primary" style="border-radius: 10px;">Enable</button>
+                        </a>
+                        {% else %}
+                        <a href="/ad/0/{{d.emp_id}}">
+                            <button class="btn btn-primary" style="border-radius: 10px;">Disable</button>
+                        </a>
+                        {% endif%}
+                        {% endfor %}
                         <button type="button" class="btn btn-primary mb-2 mt-2" style="border-radius: 10px;"
                             data-toggle="modal" data-target="#adhr">
                             View Aadhar
@@ -464,7 +509,9 @@
                         </div>
                     </div>
                     <div class="emp_aadharImg">
-                        <img src="" alt="aadhar_img">
+                        {% for e in emplcT %}
+                        <img src='/media/attende/travel/{{e.travel_Image}}' alt="travel_img" style="height: 310px; width: 410px;">
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -481,7 +528,7 @@
             const uluru = { lat: la, lng: lo };
             // The map, centered at Uluru
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 4,
+                zoom: 15,
                 center: uluru,
             });
             // The marker, positioned at Uluru

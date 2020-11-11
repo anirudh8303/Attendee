@@ -8,10 +8,11 @@ class Employee(models.Model):
     employee_name = models.CharField(max_length=100)
     employee_phone = models.IntegerField()
     designation = models.CharField(max_length=20)
-    place = models.CharField(max_length=30)
     employee_username = models.CharField(max_length=25)
     employee_aadhar = models.ImageField(upload_to ="attende/aadhar", default="")
     employee_email = models.CharField(max_length=500, default="")
+    employee_status = models.IntegerField(default=0)
+    employee_workingDates = models.CharField(max_length=250, default="[]")
 
     def __str__(self):
         return str(self.employee_phone)
@@ -30,8 +31,6 @@ class OnSite(models.Model):
     maintain_partsImg = models.ImageField(upload_to="attende/aadhar", default="", blank=True)
 
    
-          
-
 class Travel(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     emp_date = models.DateField()
@@ -48,6 +47,7 @@ class Travel(models.Model):
     travel_by = models.CharField(max_length=100, default="", blank=True)
     travel_duration = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True)
     travel_purpose = models.CharField(max_length=100, default="", blank=True)
+    travel_Image = models.CharField(max_length=100, default="", blank=True)
     travel_force =  models.IntegerField(blank=True, null=True)
     accompanied_emp2 = models.IntegerField(blank=True, null=True)
     accompanied_emp3 =  models.IntegerField(blank=True, null=True)

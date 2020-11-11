@@ -11,5 +11,7 @@ urlpatterns = [
     path('search/', views.search, name="search"),
     path('workdetail/<id>/<date>', views.wd, name="wd"),
     path('sync/', views.sync, name="sync"),
+    path('ad/<st>/<id>', views.ad, name="ad"),
+    path('addemployee/', views.addEmployee, name="addEmployee")
 
 ]

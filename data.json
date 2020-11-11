@@ -1,1 +1,318 @@
-{"Users": {"Admin": {"8307546746": {"Profile": {"empid": "e102", "localTime": "Admin", "mail": "roublegupta0369@gmail.com ", "mobno": "8307546746", "name": "rouble2"}}, "8607576787": {"Profile": {"empid": "e102", "localTime": "Admin", "mail": "roublegupta0369@gmail.com ", "mobno": 1234, "name": "rouble2"}}, "8872652998": {"Profile": {"empid": "E12345", "mail": "vijkartik111197@gmail.com", "mobno": "8872652998", "name": "Kartik", "type": "Admin"}}}, "attendance": {"on_site": {"2020": {"11": {"05": {"8872652998": {"current_location": {"lat": 28.6429, "long": 77.2191}, "model_number": "BMM_300", "parts": "wheel, battery", "reason": "Kuch Bhi Nhi", "running": true, "site_info": "Zirakpur", "total_production": 2000, "total_run": "4500KM", "video": "8708143730_2020_11_05.mp4"}, "os_attendance": 1}, "09": {"8708143730": {"current_location": {"lat": 28.6429, "long": 77.2191}, "model_number": "BMM_300", "parts": "wheel, battery", "reason": "Kuch Bhi Nhi", "running": true, "site_info": "Zirakpur", "total_production": 2000, "total_run": "4900KM", "video": "8708143730_2020_11_05.mp4"}, "os_attendance": 1}}}}, "travelling": {"2020": {"11": {"05": {"8708143730": {"current_location": {"lat": 28.6429, "long": 77.2191}, "duration": 3, "from": "New Delhi", "photo": "8708143730_2020_11_05.jpg", "purpose": "Brick Manufacturing", "to": "bangalore", "total_workforce": ["8607576787", "8872652998"], "transport": "Train", "travelling_location": {"location1": {"lat": 28.6429, "long": 77.2191}, "location2": {"lat": 28.6429, "long": 77.2191}, "location3": {"lat": 28.6429, "long": 77.2191}}}, "t_attendance": 1}, "08": {"8872652998": {"current_location": {"lat": 77.2191, "long": 28.6429}, "duration": 3, "from": "New Delhi", "photo": "8708143730_2020_11_05.jpg", "purpose": "Brick Manufacturing", "to": "bangalore", "total_workforce": ["8607576787", "8708143730"], "transport": "Train", "travelling_location": {"location1": {"lat": 77.2191, "long": 28.6429}, "location2": {"lat": 77.2191, "long": 28.6429}, "location3": {"lat": 77.2191, "long": 28.6429}}}, "t_attendance": 1}}}}}, "profile_info": {"8708143730": {"attendance": {"2020": {"11": ["01", "02"]}}, "email_id": "vijkartik111197@gmail.com", "name": "Kartik Vij", "phone_number": 8708143730, "status": 1}, "total_employees": 1}}}
+{
+  "Users": {
+    "Admin": {
+      "8307546746": {
+        "Profile": {
+          "empid": "e102",
+          "localTime": "Admin",
+          "mail": "roublegupta0369@gmail.com ",
+          "mobno": "8307546746",
+          "name": "rouble2"
+        }
+      },
+      "8607576787": {
+        "Profile": {
+          "empid": "e102",
+          "localTime": "Admin",
+          "mail": "roublegupta0369@gmail.com ",
+          "mobno": 1234,
+          "name": "rouble2"
+        }
+      },
+      "8872652998": {
+        "Profile": {
+          "empid": "E12345",
+          "mail": "vijkartik111197@gmail.com",
+          "mobno": "8872652998",
+          "name": "Kartik",
+          "type": "Admin"
+        }
+      }
+    },
+    "attendance": {
+      "on_site": {
+        "2020": {
+          "11": {
+            "05": {
+              "8872652998": {
+                "current_location": { "lat": 28.6429, "long": 77.2191 },
+                "model_number": "BMM_300",
+                "parts": "wheel, battery",
+                "reason": "Kuch Bhi Nhi",
+                "running": true,
+                "site_info": "Zirakpur",
+                "total_production": 2000,
+                "total_run": "4500KM",
+                "video": "8708143730_2020_11_05.mp4"
+              },
+              "os_attendance": 1
+            },
+            "09": {
+              "+918307546747": {
+                "current_location": {
+                  "lat": "30.653472700000002",
+                  "long0": "76.8224173"
+                },
+                "model_number": "jsjsjs",
+                "parts": "bxnsns",
+                "reason": "jsjsjs",
+                "running": "nsneje",
+                "site_info": "jdjejee",
+                "total_production": "ndjdnd",
+                "total_run": "nejeje",
+                "video": "+918307546747_2020_11_09.mp4"
+              },
+              "+918708143730": {
+                "model_number": "BM1010",
+                "parts": "",
+                "reason": "",
+                "running": "Yes",
+                "site_info": "Kerala",
+                "total_production": "89000",
+                "total_run": "2390",
+                "video": "+918708143730_2020_11_09.mp4"
+              },
+              "os_attendance": "3"
+            },
+            "10": {
+              "+918307546747": {
+                "current_location": {
+                  "lat": "30.515145099999994",
+                  "long0": "76.6602387"
+                },
+                "model_number": "1250B",
+                "parts": "tyre",
+                "reason": "panchure",
+                "running": "yes",
+                "site_info": "derabassi",
+                "total_production": "102",
+                "total_run": "10000",
+                "video": "+918307546747_2020_11_10.mp4"
+              }
+            },
+            "11": {
+              "+918607576787": {
+                "current_location": {
+                  "lat": "30.652424",
+                  "long0": "76.82257589999999"
+                },
+                "model_number": "B101",
+                "parts": "wheel",
+                "reason": "not working",
+                "running": "true",
+                "site_info": "fun",
+                "total_production": "201",
+                "total_run": "10000",
+                "video": "+918607576787_2020_11_11.mp4"
+              }
+            }
+          }
+        }
+      },
+      "travelling": {
+        "2020": {
+          "11": {
+            "05": {
+              "8708143730": {
+                "current_location": { "lat": 28.6429, "long": 77.2191 },
+                "duration": 3,
+                "from": "New Delhi",
+                "photo": "8708143730_2020_11_05.jpg",
+                "purpose": "Brick Manufacturing",
+                "to": "bangalore",
+                "total_workforce": ["8607576787", "8872652998"],
+                "transport": "Train",
+                "travelling_location": {
+                  "location1": { "lat": 28.6429, "long": 77.2191 },
+                  "location2": { "lat": 28.6429, "long": 77.2191 },
+                  "location3": { "lat": 28.6429, "long": 77.2191 }
+                }
+              },
+              "t_attendance": 1
+            },
+            "08": {
+              "8872652998": {
+                "current_location": { "lat": 77.2191, "long": 28.6429 },
+                "duration": 3,
+                "from": "New Delhi",
+                "photo": "8708143730_2020_11_05.jpg",
+                "purpose": "Brick Manufacturing",
+                "to": "bangalore",
+                "total_workforce": ["8607576787", "8708143730"],
+                "transport": "Train",
+                "travelling_location": {
+                  "location1": { "lat": 77.2191, "long": 28.6429 },
+                  "location2": { "lat": 77.2191, "long": 28.6429 },
+                  "location3": { "lat": 77.2191, "long": 28.6429 }
+                }
+              },
+              "t_attendance": 1
+            },
+            "09": {
+              "8708143730": {
+                "duration": "3",
+                "from": "Delhi",
+                "photo": "8708143730_2020_11_09.jpg",
+                "purpose": "Fun",
+                "to": "Kerala",
+                "totalforce": "2",
+                "transport": "Own"
+              },
+              "t_attendance": 1
+            },
+            "10": {
+              "+918307546747": {
+                "current_location": {
+                  "lat": "30.515145099999994",
+                  "long0": "76.6602387"
+                },
+                "duration": "2",
+                "from": "smalkha",
+                "photo": "+918307546747_2020_11_10.jpg",
+                "purpose": "fun",
+                "to": "delhi",
+                "totalforce": "['8307546747']",
+                "transport": "bus"
+              },
+              "+918708143730": {
+                "duration": "2",
+                "from": "kol",
+                "photo": "+918708143730_2020_11_10.jpg",
+                "purpose": "ghanta",
+                "to": "tld",
+                "totalforce": "1",
+                "transport": "bus"
+              }
+            },
+            "11": {
+              "+918307546747": {
+                "current_location": {
+                  "lat": "30.652412700000003",
+                  "long0": "76.82233049999999"
+                },
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              },
+              "+918607576787": {
+                "current_location": {
+                  "lat": "30.653472700000002",
+                  "long0": "76.8224173"
+                },
+                "duration": "1",
+                "from": "fun",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "no",
+                "to": "fun ",
+                "totalforce": "1",
+                "transport": "bus"
+              },
+              "+918708143730": {
+                "current_location": {
+                  "lat": "30.652412700000003",
+                  "long0": "76.82233049999999"
+                },
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus",
+                "travelling_location": {
+                  "location1": { "lat": "29.2402022", "long0": "77.0151155" }
+                }
+              }
+            },
+            "12": {
+              "+918307546747": {
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              },
+              "+918607576787": {
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              },
+              "+918708143730": {
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              }
+            },
+            "13": {
+              "+918307546747": {
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              },
+              "+918607576787": {
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              },
+              "+918708143730": {
+                "duration": "3",
+                "from": "hisar",
+                "photo": "+918607576787_2020_11_11.jpg",
+                "purpose": "fun",
+                "to": "chd",
+                "totalforce": "3",
+                "transport": "bus"
+              }
+            }
+          }
+        }
+      }
+    },
+    "profile_info": {
+      "+918307546747": {
+        "attendance": { "2020": { "11": { "11": 11, "12": 12, "13": 13 } } },
+        "email_id": "roublegupta03@gmail.com",
+        "name": "Rouble Gupta",
+        "phone_number": 8307546747,
+        "status": 1
+      },
+      "+918607576787": {
+        "attendance": { "2020": { "11": { "11": 11, "12": 12, "13": 13 } } },
+        "email_id": "roublegupta03@gmail.com",
+        "name": "Rouble Gupta",
+        "phone_number": 8607576787,
+        "status": 1
+      },
+      "+918708143730": {
+        "attendance": { "2020": { "11": { "11": 11, "12": 12, "13": 13 } } },
+        "email_id": "vijkartik1197@gmail.com",
+        "name": "Kartik Vij",
+        "phone_number": 8708143730,
+        "status": 1
+      },
+      "total_employees": 3
+    }
+  }
+}
