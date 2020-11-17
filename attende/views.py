@@ -339,6 +339,7 @@ def homeadmin(request, id):
         for em in employe:
             empData.append(em)     
         ed = Employee.objects.filter(emp_id=id) 
+        employeeworkingdates = len(eval(Employee.objects.filter(emp_id=id).values('employee_workingDates')[0]['employee_workingDates']))
         totalemp = Employee.objects.all().count()  
         current_time = datetime.datetime.now()
         onsiteEmployee = OnSite.objects.filter(emp_date=current_time).count()
@@ -362,7 +363,8 @@ def homeadmin(request, id):
                     'totalemp': totalemp,
                     'os': onsiteEmployee,
                     'te': travelEmployee,
-                    'inac': inactive }  
+                    'inac': inactive,
+                    'count': employeeworkingdates }  
             return render(request, 'attende/admin.html', params)   
         else:
             params = { 'empData' : empData,
@@ -376,7 +378,8 @@ def homeadmin(request, id):
                    'totalemp': totalemp,
                     'os': onsiteEmployee,
                     'te': travelEmployee,
-                    'inac': inactive } 
+                    'inac': inactive,
+                    'count': employeeworkingdates } 
             return render(request, 'attende/admin.html', params) 
     else :
       return redirect('/')  
@@ -387,3 +390,9 @@ def search(request):
     searchData = Employee.objects.filter(employee_name__icontains=query) or Employee.objects.filter(employee_phone__icontains=query)
     params = {'searchData': searchData}
     return render(request, 'attende/SearchPage.html', params)     
+
+
+def mapview(request, lat, long):
+    params = {'la': lat,
+              'lo': long}
+    return render(request,'attende/mapview.html', params)          
