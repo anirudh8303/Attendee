@@ -229,9 +229,9 @@
                                  aria-describedby="Full Name..." name="name2" />
                          </div>
                          <div class="form-group">
-                             <label for="exampleInputPhone1">Phone</label>
+                             <label for="exampleInputPhone1">Phone (Without 0 and +91) </label>
                              <input type="number" class="form-control" id="exampleInputPhone1"
-                                 aria-describedby="Contact Number..." name="phn2" />
+                                 aria-describedby="Contact Number..." name="phn2" max="9999999999" />
                          </div>
                          <div class="form-group">
                              <label for="exampleInputEmail1">Email address</label>
@@ -242,6 +242,11 @@
                              <label for="exampleInputDesignation">Designation</label>
                              <input type="text" class="form-control" id="exampleInputDesignation"
                                  aria-describedby="Designation" name="desg2" />
+                         </div>
+                         <div class="form-group">
+                            <label for="exampleInputadhrnumber">Aadhaar Number</label>
+                            <input type="number" class="form-control" id="exampleInputadhrnumber"
+                                aria-describedby="Aadhar Number" name="adhrn" max="999999999999" required/>
                          </div>
                          <div class="form-group">
                              <label for="exampleUpload">Upload Id</label>
@@ -365,8 +370,10 @@
                             data-toggle="modal" data-target="#adhr">
                             View Aadhar
                         </button>
+                        {% if id is not None %}
                         <a href="/homeadmin/{{id}}"><button class="btn btn-primary"
                                 style="border-radius: 10px;">Refresh</button></a>
+                        {% endif %}        
                     </center>
                     <!-- View Aadhar Modal-->
                     <div class="modal fade" id="adhr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
