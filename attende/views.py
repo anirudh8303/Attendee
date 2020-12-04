@@ -1,3 +1,5 @@
+from twilio.rest import Client
+import os
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -30,8 +32,151 @@ firebase_admin.initialize_app(cred, {
 
 })
 
-#storage = firebase.storage()
+# storage = firebase.storage()
 bucket = storage.bucket()
+
+
+def download_blob2(source_file):
+    bucket = storage.bucket()
+    fname = source_file.split('.')
+    blob = bucket.blob('OnSite/'+fname[0])
+    blob.download_to_filename('media/attende/on_site/' + fname[0]+'.'+fname[1])
+    print("Downloaded ", fname)
+    return fname[0]+'.'+fname[1]
+
+
+def download_blobaudio(source_file):
+    bucket = storage.bucket()
+    fname = source_file.split('.')
+    blob = bucket.blob('Audio/'+fname[0])
+    blob.download_to_filename(
+        'media/attende/onsiteaudios/' + fname[0]+'.'+fname[1])
+    print("Downloaded ", fname)
+    return fname[0]+'.'+fname[1]
+
+
+def whatsapp(request):
+    current_time = datetime.datetime.now()
+    with open('data.json') as json_file:
+        data = json.load(json_file)
+    account_sid = 'ACa78997dd4d15c940e985159d6e503fa1'
+    auth_token = '6d996929c5fe90cd904a2ace08326482'
+    client = Client(account_sid, auth_token)
+    bdy = []
+
+    def listToString(s):
+        str1 = ""
+        for ele in s:
+            str1 += ele
+            str1 += "\n"
+    # return string
+        return str1
+    try:
+        z = []
+        photoNamesList = []
+        a = []
+        with open('TravelImages.txt', 'r') as f:
+            a = json.loads(f.read())
+        for i in data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]:
+            emp = Employee.objects.get(employee_phone=i[3:])
+            name = emp.employee_name
+            z.append(name)
+            z.append("Employee_phone : " + " " + i)
+            photo_name = data['Users']['attendance']['travelling'][str(
+                current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['photo']
+            if photo_name in a:
+                print("Already sent")
+            else:
+                for k in data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]:
+                    z.append(k + ":" + " " + str(data['Users']['attendance']['travelling'][str(
+                        current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i][k]))
+                    msg = listToString(z)
+                message = client.messages.create(
+                    media_url=[
+                        f'https://snpc.code-e-python.com/media/attende/travel/{photo_name}'],
+                    from_='whatsapp:+14155238886',
+                    body=msg,
+                    to='whatsapp:+917054394051'
+                )
+                z.clear()
+                photoNamesList.append(photo_name)
+                with open('TravelImages.txt', 'w') as f:
+                    f.write(json.dumps(photoNamesList))
+    except:
+        print("Too many msgs resend again for remaining travelling details")
+    try:
+        y = []
+        videoNamesList = []
+        b = []
+        with open('OnsiteVideo.txt', 'r') as f:
+            b = json.loads(f.read())
+        for i in data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]:
+            emp = Employee.objects.get(employee_phone=i[3:])
+            name = emp.employee_name
+            y.append(name)
+            y.append("Employee_phone : " + " " + i)
+            video_name = data['Users']['attendance']['on_site'][str(
+                current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]['video']
+            if video_name in b:
+                print("Already sent")
+            else:
+                download_blob2(video_name)
+                for k in data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i]:
+                    y.append(k + ":" + " " + str(data['Users']['attendance']['on_site'][str(
+                        current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))][i][k]))
+                msg2 = listToString(y)
+                message = client.messages.create(
+                    from_='whatsapp:+14155238886',
+                    body=msg2,
+                    to='whatsapp:+917054394051'
+                )
+                message = client.messages.create(
+                    media_url=[
+                        f'https://snpc.code-e-python.com/media/attende/on_site/{video_name}'],
+                    from_='whatsapp:+14155238886',
+                    to='whatsapp:+917054394051'
+                )
+                y.clear()
+                videoNamesList.append(video_name)
+                with open('OnsiteVideo.txt', 'w') as f:
+                    f.write(json.dumps(videoNamesList))
+                video_name = ""
+                try:
+                    audio_name = i+"_"+str(current_time.year)+"_" + \
+                        str(current_time.strftime("%m"))+"_" + \
+                        str(current_time.strftime("%d"))+"_"+"parts"+".mp3"
+                    download_blobaudio(audio_name)
+                    print(audio_name)
+                    message = client.messages.create(
+                        media_url=[
+                            f'https://snpc.code-e-python.com/media/attende/onsiteaudios/{audio_name}'],
+                        from_='whatsapp:+14155238886',
+                        to='whatsapp:+917054394051'
+                    )
+                except:
+                    print("No parts audio")
+
+                try:
+                    audio_name1 = i+"_"+str(current_time.year)+"_" + \
+                        str(current_time.strftime("%m"))+"_" + \
+                        str(current_time.strftime("%d"))+"_"+"reasons"+".mp3"
+                    download_blobaudio(audio_name1)
+                    message = client.messages.create(
+                        media_url=[
+                            f'https://snpc.code-e-python.com/media/attende/onsiteaudios/{audio_name1}'],
+                        from_='whatsapp:+14155238886',
+                        to='whatsapp:+917054394051'
+                    )
+                except:
+                    print("No reasons audio")
+
+                print(audio_name)
+
+    except:
+        print("Too many on_site msgs")
+
+    messages.success(request, "Your message has been sent")
+    return redirect('/hd')
 
 
 def download_blob(source_file):
@@ -47,7 +192,7 @@ def upload_blob(file_location):
     bucket = storage.bucket()
     blob = bucket.blob('AadharCard/'+file_location)
     blob.upload_from_filename('./media/attende/aadhar/'+file_location)
-    #fbase_location = 'gs://snpc-attendence.appspot.com/AadharCard' + fname
+    # fbase_location = 'gs://snpc-attendence.appspot.com/AadharCard' + fname
     print("Uploaded ", file_location)
 
 
@@ -94,9 +239,19 @@ def sync(request):
         for i in f:
             try:
                 if OnSite.objects.filter(employee=Employee.objects.get(employee_phone=i), emp_date=current_time).count() == 0:
-                    onsite = OnSite(employee=Employee.objects.get(employee_phone=i), emp_date=current_time, emp_latitude=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['lat'], emp_longitude=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['long0'], emp_work_modelNumber=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['model_number'], emp_maintainParts=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime(
+                    onsite = OnSite(employee=Employee.objects.get(employee_phone=i), emp_date=current_time, emp_work_modelNumber=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['model_number'], emp_maintainParts=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime(
                         "%m"))][str(current_time.strftime("%d"))]["+91"+i]['parts'], emp_partsReason=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['reason'], emp_totalProdution=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['total_production'], emp_siteInfo=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['site_info'], emp_running=data['Users']['attendance']['on_site'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['total_run'])
                     onsite.save()
+                    try:
+                        s = OnSite.objects.get(
+                            employee=Employee.objects.get(employee_phone=i))
+                        s.emp_latitude = data['Users']['attendance']['on_site'][str(current_time.year)][str(
+                            current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['lat']
+                        s.emp_longitude = data['Users']['attendance']['on_site'][str(current_time.year)][str(
+                            current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['long0']
+                        s.save()
+                    except:
+                        print("Current location not there")
                 else:
                     continue
             except:
@@ -112,8 +267,8 @@ def sync(request):
         for i in h:
             try:
                 if Travel.objects.filter(employee=Employee.objects.get(employee_phone=i), emp_date=current_time).count() == 0:
-                    trvl = Travel(employee=Employee.objects.get(employee_phone=i), travel_force=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['totalforce'], travel_Image=download_blob(data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['photo']), emp_date=current_time, emp_latitudec=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['lat'], emp_longitudec=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['long0'], travel_from=data['Users']['attendance']['travelling'][str(
-                        current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['from'], travel_to=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['to'], travel_duration=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['duration'], travel_purpose=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['purpose'], travel_by=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['transport'])
+                    trvl = Travel(employee=Employee.objects.get(employee_phone=i), travel_force=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['totalforce'], travel_Image=download_blob(data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['photo']), emp_date=current_time, travel_from=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['from'], travel_to=data['Users']['attendance']['travelling'][str(
+                        current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['to'], travel_duration=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['duration'], travel_purpose=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['purpose'], travel_by=data['Users']['attendance']['travelling'][str(current_time.year)][str(current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['transport'])
                     trvl.save()
                 else:
                     continue
@@ -123,6 +278,11 @@ def sync(request):
             try:
                 trvle = Travel.objects.get(
                     employee=Employee.objects.get(employee_phone=i))
+                trvle.emp_latitudec = data['Users']['attendance']['travelling'][str(current_time.year)][str(
+                    current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['lat']
+                trvle.emp_longitudec = data['Users']['attendance']['travelling'][str(current_time.year)][str(
+                    current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['current_location']['long0']
+                trvle.save()
                 trvle.emp_latitude1 = data['Users']['attendance']['travelling'][str(current_time.year)][str(
                     current_time.strftime("%m"))][str(current_time.strftime("%d"))]["+91"+i]['travelling_location']['location1']['lat']
                 trvle.emp_longitude1 = data['Users']['attendance']['travelling'][str(current_time.year)][str(

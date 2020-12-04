@@ -13,6 +13,7 @@ urlpatterns = [
     path('sync/', views.sync, name="sync"),
     path('ad/<st>/<id>', views.ad, name="ad"),
     path('addemployee/', views.addEmployee, name="addEmployee"),
-    path('mapview/<lat>/<long>', views.mapview, name="mapview")
+    path('mapview/<lat>/<long>', views.mapview, name="mapview"),
+    path('sendonwhatsapp/', views.whatsapp, name="whatsapp")
 
 ]
